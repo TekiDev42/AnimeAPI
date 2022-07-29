@@ -12,7 +12,7 @@ def index(request):
 
 class UserViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows users to be viewed or edited.
+    API endpoint that allows users to be viewed.
     """
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
@@ -21,7 +21,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 class AnimeViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows users to be viewed or edited.
+    API endpoint that allows anime to be viewed or edited.
     """
     queryset = Anime.objects.all()
     serializer_class = AnimeSerializer
