@@ -6,14 +6,12 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>AnimeAPI</title>
-
-    <script src="https://unpkg.com/htmx.org@1.8.0" async defer></script>
 </head>
 <body>
 
     <div id="response" style="display:flex;flex-direction:column;"></div>
 
-    <form method="POST" action="{% url 'add_user' %}" style="display: flex;flex-direction: column;max-width: 640px;">
+    <form id="form" method="POST" style="display: flex;flex-direction: column;max-width: 640px;">
         {% csrf_token %}
 
         <label for="username">username</label>
@@ -22,20 +20,49 @@
         <label for="password">password</label>
         <input id="password" type="password" name="password">
 
-        <label for="useremail">useremail</label>
-        <input id="useremail" type="email" name="useremail">
-
-        <button hx-post="{% url 'add_user' %}"
-                hx-target="#response"
-                hx-swap="beforeend"
-                type="submit">Valider
-        </button>
+        <button type="submit">Valider</button>
     </form>
 
+
+    <p><button id="get-data">Get data</button></p>
+
 <script defer async>
-    document.addEventListener('htmx:responseError', (evt) => {
-        console.log(evt.detail.xhr);
+    // jwt_decode
+
+    const form = document.querySelector('#form');
+    form.addEventListener('submit', async (evt) => {
+        evt.preventDefault()
+        const data = new FormData(form);
+
+        const query = await fetch("http://127.0.0.1:8000/api/token/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({username: data.get('username'), password: data.get('password')})
+        })
+
+        const response = await query.json();
+        localStorage.setItem("authTokens", JSON.stringify(response));
     });
+
+    const button = document.querySelector('#get-data');
+    button.addEventListener('click', async (evt) => {
+        evt.preventDefault()
+
+        const token = JSON.parse(localStorage.getItem('authTokens'));
+
+        const query = await fetch(`http://127.0.0.1:8000/animes/`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token.access}`
+            }
+        })
+
+        const response = await query.json();
+        console.log(response)
+    })
 </script>
 
 </body>

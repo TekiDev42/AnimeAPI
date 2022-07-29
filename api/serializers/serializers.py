@@ -11,6 +11,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class AnimeSerializer(serializers.HyperlinkedModelSerializer):
+
     class Meta:
         model = Anime
         fields = [

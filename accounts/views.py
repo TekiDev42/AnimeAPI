@@ -1,7 +1,4 @@
-from pprint import pprint
-
-from django.contrib.auth import logout, authenticate, login
-
+from django.contrib.auth import logout, login
 
 from django.http import HttpResponse
 from django.shortcuts import redirect
@@ -11,7 +8,6 @@ from django.utils.translation import gettext_lazy as _
 from django.core.validators import validate_email
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.validators import UnicodeUsernameValidator
-from django.core.exceptions import ValidationError
 
 from accounts.models import User
 from accounts.utils import fields_is_not_empty, fields_validator
@@ -54,18 +50,6 @@ def create_user(request):
             return HttpResponse(_('This user is already used.'), status=400)
 
     return HttpResponse(_('An error has occurred, please try again'), status=409)
-
-
-def login_user(request):
-    if request.method == "POST":
-        username = escape(request.POST.get('username'))
-        password = escape(request.POST.get('password'))
-        user = authenticate(username=username, password=password)
-
-        if user:
-            login(request, user)
-
-    return redirect('home')
 
 
 def logout_user(request):

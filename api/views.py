@@ -1,29 +1,21 @@
 from django.shortcuts import render
-from rest_framework import viewsets, permissions
+from rest_framework import permissions
+from rest_framework.viewsets import ModelViewSet
 
-from accounts.models import User
 from api.models import Anime
-from api.serializers.serializers import UserSerializer, AnimeSerializer
+from api.serializers.serializers import AnimeSerializer
 
 
 def index(request):
     return render(request, 'api/index.html', context={})
 
 
-class UserViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows users to be viewed.
-    """
-    queryset = User.objects.all().order_by('-date_joined')
-    serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-
-class AnimeViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows anime to be viewed or edited.
-    """
-    queryset = Anime.objects.all()
+class AnimeViewSet(ModelViewSet):
     serializer_class = AnimeSerializer
     permission_classes = [permissions.IsAuthenticated]
+    queryset = Anime.objects.all().order_by('nom')
+
+    def get_queryset(self):
+        user_id: int = self.request.user.id
+        return Anime.objects.filter(user__anime=user_id)
 
