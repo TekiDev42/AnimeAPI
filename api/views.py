@@ -1,26 +1,28 @@
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
-from django.utils.html import escape
+from django.shortcuts import render
+from rest_framework import viewsets, permissions
 
+from accounts.models import User
 from api.models import Anime
+from api.serializers.serializers import UserSerializer, AnimeSerializer
 
 
 def index(request):
     return render(request, 'api/index.html', context={})
 
 
-"""
-def ajouter_plateforme(request):
-    if request.method == "POST":
-        plateforme_name = escape(request.POST.get('plateforme_name'))
-        plateforme_url = escape(request.POST.get('plateforme_url'))
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = User.objects.all().order_by('-date_joined')
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
-        plateforme, created = Plateforme.objects.get_or_create(nom=plateforme_name, url=plateforme_url)
 
-        if not created:
-            return HttpResponse("La plateforme existe déjà", status=409)
-
-        return HttpResponse(f'<div>{plateforme_name}</div>')
-
-    return redirect('home')
-"""
+class AnimeViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = Anime.objects.all()
+    serializer_class = AnimeSerializer
+    permission_classes = [permissions.IsAuthenticated]
