@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AnimeAPI</title>
+
+    <script src="https://unpkg.com/htmx.org@1.8.0" async defer></script>
+</head>
+<body>
+
+    <div id="response" style="display:flex;flex-direction:column;"></div>
+
+    <form method="POST" action="">
+        {% csrf_token %}
+
+        <input type="text" name="plateforme_name">
+        <input type="text" name="plateforme_url">
+
+        <button hx-post=""
+                hx-target="#response"
+                hx-swap="beforeend"
+                type="submit">Valider
+        </button>
+    </form>
+
+<script defer async>
+    document.addEventListener('htmx:responseError', (evt) => {
+        console.log(evt.detail.xhr);
+    });
+</script>
+
+</body>
+</html>
