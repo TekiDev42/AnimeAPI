@@ -1,11 +1,20 @@
+from pprint import pprint
+
 from django.contrib.auth import logout, authenticate, login
+
+
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.utils.html import escape
 from django.utils.translation import gettext_lazy as _
 
+from django.core.validators import validate_email
+from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth.validators import UnicodeUsernameValidator
+from django.core.exceptions import ValidationError
+
 from accounts.models import User
-from accounts.utils import validation_fields
+from accounts.utils import fields_is_not_empty, fields_validator
 
 
 def create_user(request):
@@ -15,16 +24,30 @@ def create_user(request):
         user_email = escape(request.POST.get('useremail'))
         password = escape(request.POST.get('password'))
 
-        fields_is_valid = validation_fields([username, user_email, password])
+        fields = [
+            (username, UnicodeUsernameValidator),
+            (password, validate_password),
+            (user_email, validate_email),
+        ]
 
-        if not fields_is_valid:
+        fields_status = fields_is_not_empty([username, user_email, password])
+
+        if not fields_status:
             return HttpResponse(_("Required fields are not valid"), status=400)
 
-        new_user = User.objects.create_user(username=username, password=password, email=user_email)
+        has_error, message = fields_validator(fields)
 
-        if new_user:
+        if not has_error:
+            return HttpResponse(_(message), status=409)
+
+        new_user, created = User.objects.get_or_create(username=username, password=password, email=user_email)
+
+        if created:
             login(request, new_user)
             return HttpResponse(_('Account has been created'), status=200)
+
+        if new_user and not created:
+            return HttpResponse(_('This user is already used.'), status=400)
 
     return HttpResponse(_('An error has occurred, please try again'), status=409)
 

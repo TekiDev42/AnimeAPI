@@ -13,13 +13,19 @@
 
     <div id="response" style="display:flex;flex-direction:column;"></div>
 
-    <form method="POST" action="">
+    <form method="POST" action="{% url 'add_user' %}" style="display: flex;flex-direction: column;max-width: 640px;">
         {% csrf_token %}
 
-        <input type="text" name="plateforme_name">
-        <input type="text" name="plateforme_url">
+        <label for="username">username</label>
+        <input id="username" type="text" name="username">
 
-        <button hx-post=""
+        <label for="password">password</label>
+        <input id="password" type="password" name="password">
+
+        <label for="useremail">useremail</label>
+        <input id="useremail" type="email" name="useremail">
+
+        <button hx-post="{% url 'add_user' %}"
                 hx-target="#response"
                 hx-swap="beforeend"
                 type="submit">Valider
