@@ -3,6 +3,8 @@ from accounts.models import User
 
 
 class Anime(models.Model):
+    objects = models.Manager()
+
     nom = models.CharField(max_length=64)
     nom_original = models.CharField(max_length=64, null=True)
     description = models.TextField(null=True)
