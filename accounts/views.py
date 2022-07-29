@@ -24,13 +24,17 @@ def create_user(request):
         user_email = escape(request.POST.get('useremail'))
         password = escape(request.POST.get('password'))
 
+        """
+            List of tuples with values + validation functions
+            (Value + Validator function)
+        """
         fields = [
             (username, UnicodeUsernameValidator),
             (password, validate_password),
             (user_email, validate_email),
         ]
 
-        fields_status = fields_is_not_empty([username, user_email, password])
+        fields_status = fields_is_not_empty([fields[0][0], fields[1][0], fields[2][0]])
 
         if not fields_status:
             return HttpResponse(_("Required fields are not valid"), status=400)
