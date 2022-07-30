@@ -45,7 +45,7 @@
 <script defer async>
     // jwt_decode
 
-    const form_user = document.querySelector('#form_get_token');
+    const form_user = document.querySelector('#form_add_user');
     form_user.addEventListener('submit', async (evt) => {
         evt.preventDefault()
         const data = new FormData(form_user);
@@ -67,7 +67,7 @@
         evt.preventDefault()
         const data = new FormData(form);
 
-        const query = await fetch("http://127.0.0.1:8000/api/token/", {
+        const query = await fetch("http://127.0.0.1:8000/token/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
