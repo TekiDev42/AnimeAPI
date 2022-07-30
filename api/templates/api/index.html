@@ -8,8 +8,9 @@
     <title>AnimeAPI</title>
 </head>
 <body>
+    <p><button id="get-data">Get data</button></p>
 
-    <div id="response" style="display:flex;flex-direction:column;"></div>
+    {% csrf_token %}
 
     <form id="form_add_user" method="POST" style="display: flex;flex-direction: column;max-width: 640px;">
         <h2>Create user</h2>
@@ -28,7 +29,7 @@
 
 
     <form id="form_get_token" method="POST" style="display: flex;flex-direction: column;max-width: 640px;">
-        <h2>GET TOKEN</h2>
+        <h2>Get Token</h2>
 
         <label for="username">username</label>
         <input id="username" type="text" name="username">
@@ -40,22 +41,87 @@
     </form>
 
 
-    <p><button id="get-data">Get data</button></p>
+    <form id="form_add_anime" method="POST" style="display: flex;flex-direction: column;max-width: 640px;">
+        <h2>Anime</h2>
+
+        <label for="nom_add_anime">nom</label>
+        <input id="nom_add_anime" type="text" name="nom">
+
+        <label for="nom_o_add_anime">nom original</label>
+        <input id="nom_o_add_anime" type="text" name="nom_original">
+
+        <label for="description_add_anime">description</label>
+        <textarea id="description_add_anime" name="description" cols="30" rows="10"></textarea>
+
+        <label for="saison_add_anime">Nb saison</label>
+        <input id="saison_add_anime" type="number" min="1" max="99" name="nombres_saisons">
+
+        <div style="display: flex;flex-direction: row;align-items: center;gap: 5px;">
+            <label for="status_add_anime">Terminé</label>
+            <input id="status_add_anime" type="checkbox" name="status_anime">
+        </div>
+
+        <div style="display: flex;flex-direction: row;align-items: center;gap: 5px;">
+            <label for="status__add_anime">Déjà vu</label>
+            <input id="status__add_anime" type="checkbox" name="status">
+        </div>
+
+        <label for="plateforme_add_anime">Plateforme</label>
+        <select id="plateforme_add_anime" name="plateforme">
+            <option value="1" selected>ADN</option>
+        </select>
+
+        <button type="submit">Valider</button>
+    </form>
 
 <script defer async>
     // jwt_decode
+
+    const form_add_anime = document.querySelector('#form_add_anime');
+    form_add_anime.addEventListener('submit', async (evt) => {
+        evt.preventDefault()
+        const data = new FormData(form_add_anime);
+
+        const token = JSON.parse(localStorage.getItem('authTokens'));
+
+        const stringify = JSON.stringify({
+                nom: data.get('nom'),
+                nom_original: data.get('nom_original'),
+                description: data.get('description'),
+                nombres_saisons: parseInt(data.get('nombres_saisons').toString()) ?? 1,
+                status_anime: data.get('status_anime') ?? false,
+                status: data.get('status') ?? false,
+                plateforme: {plateforme: parseInt(data.get('plateforme').toString())},
+                user: 1
+            })
+
+        console.log(stringify)
+
+        const query = await fetch("http://127.0.0.1:8000/animes-add/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token.access}`
+            },
+            body: stringify
+        });
+
+        const response = await query.json();
+        console.log(response);
+    });
+
 
     const form_user = document.querySelector('#form_add_user');
     form_user.addEventListener('submit', async (evt) => {
         evt.preventDefault()
         const data = new FormData(form_user);
 
-        const query = await fetch("http://127.0.0.1:8000/signin/", {
+        const query = await fetch("http://127.0.0.1:8000/register/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({username: data.get('username'), password: data.get('password'),useremail: data.get('useremail')})
+            body: JSON.stringify({username: data.get('username'), password: data.get('password'),email: data.get('useremail')})
         });
 
         const response = await query.json();

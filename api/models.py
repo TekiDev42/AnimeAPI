@@ -22,7 +22,7 @@ class Anime(models.Model):
     status_anime = models.BooleanField(default=False)
     status = models.BooleanField(default=False)
     image = models.ImageField(upload_to="anime_image", blank=True, null=True)
-    plateforme = models.ForeignKey(Plateforme, on_delete=models.CASCADE)
+    plateforme = models.ForeignKey(Plateforme, on_delete=models.CASCADE, related_name="plateforme_set")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
