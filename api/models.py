@@ -2,6 +2,15 @@ from django.db import models
 from accounts.models import User
 
 
+class Plateforme(models.Model):
+    objects = models.Manager()
+    plateforme = models.CharField(max_length=64, unique=True)
+    plateforme_url = models.CharField(max_length=256)
+
+    def __str__(self):
+        return self.plateforme
+
+
 class Anime(models.Model):
     objects = models.Manager()
 
@@ -13,9 +22,8 @@ class Anime(models.Model):
     status_anime = models.BooleanField(default=False)
     status = models.BooleanField(default=False)
     image = models.ImageField(upload_to="anime_image", blank=True, null=True)
-    plateforme = models.CharField(max_length=64, null=True)
-    plateforme_url = models.CharField(max_length=256, null=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    plateforme = models.ForeignKey(Plateforme, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.nom

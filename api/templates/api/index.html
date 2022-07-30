@@ -11,8 +11,24 @@
 
     <div id="response" style="display:flex;flex-direction:column;"></div>
 
-    <form id="form" method="POST" style="display: flex;flex-direction: column;max-width: 640px;">
-        {% csrf_token %}
+    <form id="form_add_user" method="POST" style="display: flex;flex-direction: column;max-width: 640px;">
+        <h2>Create user</h2>
+
+        <label for="username_add">username</label>
+        <input id="username_add" type="text" name="username">
+
+        <label for="password_add">password</label>
+        <input id="password_add" type="password" name="password">
+
+        <label for="useremail_add">email</label>
+        <input id="useremail_add" type="email" name="useremail">
+
+        <button type="submit">Valider</button>
+    </form>
+
+
+    <form id="form_get_token" method="POST" style="display: flex;flex-direction: column;max-width: 640px;">
+        <h2>GET TOKEN</h2>
 
         <label for="username">username</label>
         <input id="username" type="text" name="username">
@@ -29,7 +45,24 @@
 <script defer async>
     // jwt_decode
 
-    const form = document.querySelector('#form');
+    const form_user = document.querySelector('#form_get_token');
+    form_user.addEventListener('submit', async (evt) => {
+        evt.preventDefault()
+        const data = new FormData(form_user);
+
+        const query = await fetch("http://127.0.0.1:8000/signin/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({username: data.get('username'), password: data.get('password'),useremail: data.get('useremail')})
+        });
+
+        const response = await query.json();
+        console.log(response);
+    });
+
+    const form = document.querySelector('#form_get_token');
     form.addEventListener('submit', async (evt) => {
         evt.preventDefault()
         const data = new FormData(form);

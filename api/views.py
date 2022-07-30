@@ -2,12 +2,22 @@ from django.shortcuts import render
 from rest_framework import permissions
 from rest_framework.viewsets import ModelViewSet
 
-from api.models import Anime
-from api.serializers.serializers import AnimeSerializer
+from api.models import Anime, Plateforme
+from api.serializers import PlateformeSerializer
+from api.serializers.AnimeSerializer import AnimeSerializer
 
 
 def index(request):
     return render(request, 'api/index.html', context={})
+
+
+class PlateformeViewSet(ModelViewSet):
+    serializer_class = PlateformeSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = Plateforme.objects.all().order_by('plateforme')
+
+    def get_queryset(self):
+        return Plateforme.objects.all().order_by('plateforme')
 
 
 class AnimeViewSet(ModelViewSet):
