@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from rest_framework import permissions, generics, viewsets
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
 from api.models import Anime, Plateforme
@@ -14,7 +14,7 @@ def index(request):
 
 class PlateformeViewSet(ModelViewSet):
     serializer_class = PlateformeSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     queryset = Plateforme.objects.all().order_by('plateforme')
 
     def get_queryset(self):
