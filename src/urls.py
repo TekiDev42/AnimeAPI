@@ -16,7 +16,6 @@ urlpatterns = [
 
     # API
     path('register/', RegisterView.as_view(), name='register_user'),
-    # path('animes-add', views.AddAnimeView.as_view(), name='register_user'),
     path('token/', UserTokenObtainView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
