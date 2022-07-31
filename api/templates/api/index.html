@@ -68,7 +68,7 @@
 
         <label for="plateforme_add_anime">Plateforme</label>
         <select id="plateforme_add_anime" name="plateforme">
-            <option value="1" selected>ADN</option>
+            <option value="ADN" selected>ADN</option>
         </select>
 
         <button type="submit">Valider</button>
@@ -91,8 +91,8 @@
                 nombres_saisons: parseInt(data.get('nombres_saisons').toString()) ?? 1,
                 status_anime: data.get('status_anime') ?? false,
                 status: data.get('status') ?? false,
-                plateforme: {plateforme: parseInt(data.get('plateforme').toString())},
-                user: 1
+                plateforme_id: data.get('plateforme').toString(),
+                user_id: 1
             })
 
         console.log(stringify)

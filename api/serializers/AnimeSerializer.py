@@ -36,8 +36,8 @@ class AddAnimeSerializer(serializers.ModelSerializer):
     nombres_saisons = serializers.IntegerField(write_only=True)
     status = serializers.BooleanField(write_only=True)
     status_anime = serializers.BooleanField(write_only=True)
-    user = serializers.PrimaryKeyRelatedField(many=True, read_only=True, default=serializers.CurrentUserDefault())
-    plateforme = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    user_id = serializers.IntegerField(write_only=True, default=AnimeCurrentUserDefault())
+    plateforme_id = serializers.CharField(write_only=True)
 
     class Meta:
         model = Anime
@@ -45,15 +45,22 @@ class AddAnimeSerializer(serializers.ModelSerializer):
         fields = (
             'nom', 'nom_original', 'description',
             'nombres_saisons', 'status', 'status_anime',
-            'user', 'plateforme',
+            'plateforme_id', 'user_id'
         )
 
-    """def validate(self, attr):
+    def validate(self, attr):
+        try:
+            plateforme = Plateforme.objects.get(plateforme__exact=attr['plateforme_id'])
+        except Plateforme.DoesNotExist:
+            raise serializers.ValidationError(
+                {"plateforme": "This platform does not exist."})
 
-        attr['plateforme'] = Plateforme.objects.get(id=attr['plateforme'])
-        attr['user'] = User.objects.get(id=attr['user']).id
+        if self.context['request'].user.id != attr['user_id']:
+            raise serializers.ValidationError(
+                {"user": "Who are you?!??"})
 
-        return attr"""
+        attr['plateforme_id'] = plateforme.id
+        return attr
 
     def create(self, validated):
         anime = Anime.objects.create(
@@ -63,8 +70,8 @@ class AddAnimeSerializer(serializers.ModelSerializer):
             nombres_saisons=validated['nombres_saisons'],
             status=validated['status'],
             status_anime=validated['status_anime'],
-            plateforme=validated['plateforme'],
-            user=validated['user']
+            user_id=validated['user_id'],
+            plateforme_id=validated['plateforme_id'],
         )
         anime.save()
         return anime
