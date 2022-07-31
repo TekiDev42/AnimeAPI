@@ -1,6 +1,5 @@
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from rest_framework import serializers
-from rest_framework.fields import CurrentUserDefault
 
 from api.models import Anime, Plateforme
 from api.serializers.PlateformeSerializer import PlateformeSerializer
@@ -18,13 +17,6 @@ class AnimeSerializer(serializers.ModelSerializer):
         ]
 
 
-class AnimeCurrentUserDefault(CurrentUserDefault):
-    requires_context = True
-
-    def __call__(self, serializer_field):
-        return serializer_field.context['request'].user
-
-
 class AddAnimeSerializer(serializers.ModelSerializer):
     nom = serializers.CharField(write_only=True, required=True, validators=[UnicodeUsernameValidator])
     nom_original = serializers.CharField(write_only=True, validators=[UnicodeUsernameValidator])
@@ -32,7 +24,7 @@ class AddAnimeSerializer(serializers.ModelSerializer):
     nombres_saisons = serializers.IntegerField(write_only=True)
     status = serializers.BooleanField(write_only=True)
     status_anime = serializers.BooleanField(write_only=True)
-    user_id = serializers.IntegerField(write_only=True, default=AnimeCurrentUserDefault())
+    user_id = serializers.IntegerField(write_only=True)
     plateforme_id = serializers.CharField(write_only=True)
 
     class Meta:
