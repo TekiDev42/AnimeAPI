@@ -1,11 +1,7 @@
-from pprint import pprint
-
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from rest_framework import serializers
 from rest_framework.fields import CurrentUserDefault
-from rest_framework.response import Response
 
-from accounts.models import User
 from api.models import Anime, Plateforme
 from api.serializers.PlateformeSerializer import PlateformeSerializer
 
