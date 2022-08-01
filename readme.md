@@ -22,13 +22,17 @@
 
 ## Fonctionnalités
 
+- Token
+  - [X] Création Token User
+  - [X] Refresh
+
 - User
   - [X] Créer un compte
-  - [ ] Modifier son compte
-  - [ ] Supprimer son compte
+  - [ ] Modifier
+  - [ ] Supprimer
 
 - Plateforme
-  - [ ] Afficher les plateformes
+  - [X] Afficher les plateformes
   - [ ] Ajouter
   - [ ] supprimer
   - [ ] modifier
