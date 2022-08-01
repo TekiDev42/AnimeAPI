@@ -95,8 +95,6 @@
                 user_id: 1
             })
 
-        console.log(stringify)
-
         const query = await fetch("http://127.0.0.1:8000/anime/add/", {
             method: "POST",
             headers: {
@@ -106,6 +104,7 @@
             body: stringify
         });
 
+        console.log(query)
         const response = await query.json();
         console.log(response);
     });

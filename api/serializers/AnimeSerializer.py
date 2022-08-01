@@ -1,19 +1,23 @@
+from pprint import pprint
+
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from rest_framework import serializers
 
+from accounts.serializers.RegisterSerializer import UserSerializer
 from api.models import Anime, Plateforme
 from api.serializers.PlateformeSerializer import PlateformeSerializer
 
 
 class AnimesSerializer(serializers.ModelSerializer):
     plateforme = PlateformeSerializer(read_only=True)
+    user = UserSerializer(read_only=True)
 
     class Meta:
         model = Anime
         fields = [
             'id', 'nom', 'nom_original', 'description',
             'nombres_saisons', 'status',
-            'status_anime', 'url', 'plateforme'
+            'status_anime', 'url', 'plateforme', 'user'
         ]
 
 
@@ -48,10 +52,11 @@ class AddAnimeSerializer(serializers.ModelSerializer):
                 {"user": "Who are you?!??"})
 
         attr['plateforme_id'] = plateforme.id
+        attr['user_id'] = self.context['request'].user.id
         return attr
 
     def create(self, validated):
-        anime = Anime.objects.create(
+        anime = self.Meta.model.objects.create(
             nom=validated['nom'],
             nom_original=validated['nom_original'],
             description=validated['description'],
@@ -62,4 +67,5 @@ class AddAnimeSerializer(serializers.ModelSerializer):
             plateforme_id=validated['plateforme_id'],
         )
         anime.save()
+
         return anime
