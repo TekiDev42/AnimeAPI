@@ -7,7 +7,7 @@ from accounts.views import UserTokenObtainView, RegisterView
 
 router = routers.DefaultRouter()
 router.register(r'animes', views.AnimeViewSet)
-router.register(r'animes-add', views.AddAnimeView)
+router.register(r'anime/add', views.AddAnimeView)
 router.register(r'plateformes', views.PlateformeViewSet)
 
 urlpatterns = [

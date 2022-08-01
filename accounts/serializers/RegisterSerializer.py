@@ -25,13 +25,12 @@ class RegisterSerializer(serializers.ModelSerializer):
                 })
             return attr"""
 
-        @staticmethod
-        def create(validated):
-            user = User.objects.create(
-                username=validated['username'],
-                email=validated['email']
-            )
-            user.set_password(validated['password'])
-            user.save()
+    def create(self, validated):
+        user = User.objects.create(
+            username=validated['username'],
+            email=validated['email']
+        )
+        user.set_password(validated['password'])
+        user.save()
 
-            return user
+        return user

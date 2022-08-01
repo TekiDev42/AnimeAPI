@@ -2,6 +2,8 @@
 
 ## Modèles
 
+- User
+
 - Plateformes
     - nom
     - url
@@ -15,16 +17,24 @@
     - status_anime
     - status
     - image (optionnel)
-    - plateforme (ForeignKey)
+    - Plateforme (ForeignKey)
+    - User (ForeignKey)
 
 ## Fonctionnalités
+
+- User
+  - [X] Créer un compte
+  - [ ] Modifier son compte
+  - [ ] Supprimer son compte
+
 - Plateforme
-  - Ajouter
-  - supprimer
-  - modifier
-  - Empêcher les doublons
+  - [ ] Afficher les plateformes
+  - [ ] Ajouter
+  - [ ] supprimer
+  - [ ] modifier
 
 - animes
-  - Ajouter
-  - supprimer
-  - modifier
+  - [X] Afficher les animes
+  - [X] Ajouter
+  - [ ] supprimer
+  - [ ] modifier

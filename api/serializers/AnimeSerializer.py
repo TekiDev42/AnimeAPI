@@ -5,7 +5,7 @@ from api.models import Anime, Plateforme
 from api.serializers.PlateformeSerializer import PlateformeSerializer
 
 
-class AnimeSerializer(serializers.ModelSerializer):
+class AnimesSerializer(serializers.ModelSerializer):
     plateforme = PlateformeSerializer(read_only=True)
 
     class Meta:

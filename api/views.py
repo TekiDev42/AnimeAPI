@@ -5,7 +5,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from api.models import Anime, Plateforme
 from api.serializers import PlateformeSerializer
-from api.serializers.AnimeSerializer import AnimeSerializer, AddAnimeSerializer
+from api.serializers.AnimeSerializer import AnimesSerializer, AddAnimeSerializer
 
 
 def index(request):
@@ -22,7 +22,7 @@ class PlateformeViewSet(ModelViewSet):
 
 
 class AnimeViewSet(ModelViewSet):
-    serializer_class = AnimeSerializer
+    serializer_class = AnimesSerializer
     permission_classes = [IsAuthenticated]
     queryset = Anime.objects.all().order_by('nom')
 
