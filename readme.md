@@ -1,8 +1,11 @@
 # Anime API
+## FRAMEWORK : 
+### https://www.djangoproject.com/
+### https://www.django-rest-framework.org/
 
 ## Modèles
 
-- User
+- User extends(AbstractUser)
 
 - Plateformes
     - nom
