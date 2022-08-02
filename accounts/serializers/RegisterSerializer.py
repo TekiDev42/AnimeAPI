@@ -17,13 +17,9 @@ class RegisterSerializer(serializers.ModelSerializer):
         model = User
         fields = ('username', 'password', 'email')
 
-        """@staticmethod
-        def validate(self, attr):
-            if attr['password'] != attr['password2']:
-                raise serializers.ValidationError({
-                    "password": _("Password fields didn't match")
-                })
-            return attr"""
+    """
+    def validate(self, attr):
+        return attr"""
 
     def create(self, validated):
         user = User.objects.create(

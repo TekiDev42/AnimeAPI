@@ -7,5 +7,5 @@ class PlateformeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Plateforme
         fields = [
-            'id', 'plateforme', 'plateforme_url'
+            'id', 'plateforme_name', 'plateforme_url'
         ]

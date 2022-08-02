@@ -1,7 +1,10 @@
 from pprint import pprint
 
 from django.contrib.auth.validators import UnicodeUsernameValidator
-from rest_framework import serializers
+from django.db import IntegrityError
+from rest_framework import serializers, status
+from rest_framework.response import Response
+from rest_framework.settings import api_settings
 
 from accounts.serializers.RegisterSerializer import UserSerializer
 from api.models import Anime, Plateforme
@@ -29,33 +32,29 @@ class AddAnimeSerializer(serializers.ModelSerializer):
     status = serializers.BooleanField(write_only=True)
     status_anime = serializers.BooleanField(write_only=True)
     user_id = serializers.IntegerField(write_only=True)
-    plateforme_id = serializers.CharField(write_only=True)
+    plateforme_name = serializers.CharField(write_only=True)
 
     class Meta:
         model = Anime
-        depth = 1
         fields = (
             'nom', 'nom_original', 'description',
             'nombres_saisons', 'status', 'status_anime',
-            'plateforme_id', 'user_id'
+            'user_id', 'plateforme_name'
         )
 
-    def validate(self, attr):
-        try:
-            plateforme = Plateforme.objects.get(plateforme__exact=attr['plateforme_id'])
-        except Plateforme.DoesNotExist:
+    def validate(self, attr) -> list:
+        plateforme = Plateforme.objects.all()
+        plateforme = plateforme.get(plateforme_name=attr['plateforme_name'])
+
+        if not plateforme:
             raise serializers.ValidationError(
                 {"plateforme": "This platform does not exist."})
 
-        if self.context['request'].user.id != attr['user_id']:
-            raise serializers.ValidationError(
-                {"user": "Who are you?!??"})
+        attr['plateforme_name'] = plateforme.id
 
-        attr['plateforme_id'] = plateforme.id
-        attr['user_id'] = self.context['request'].user.id
         return attr
 
-    def create(self, validated):
+    def create(self, validated) -> Response:
         anime = self.Meta.model.objects.create(
             nom=validated['nom'],
             nom_original=validated['nom_original'],
@@ -64,8 +63,8 @@ class AddAnimeSerializer(serializers.ModelSerializer):
             status=validated['status'],
             status_anime=validated['status_anime'],
             user_id=validated['user_id'],
-            plateforme_id=validated['plateforme_id'],
+            plateforme_id=validated['plateforme_name'],
         )
-        anime.save()
 
-        return anime
+        anime.save()
+        return Response(data=anime, status=status.HTTP_201_CREATED, content_type="application/json")

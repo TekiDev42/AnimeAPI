@@ -17,10 +17,10 @@ def index(request):
 class PlateformeViewSet(ModelViewSet):
     serializer_class = PlateformeSerializer
     permission_classes = [IsAuthenticated]
-    queryset = Plateforme.objects.all().order_by('plateforme')
+    queryset = Plateforme.objects.all().order_by('plateforme_name')
 
     def get_queryset(self):
-        return Plateforme.objects.all().order_by('plateforme')
+        return Plateforme.objects.all().order_by('plateforme_name')
 
 
 class AnimeViewSet(ModelViewSet):

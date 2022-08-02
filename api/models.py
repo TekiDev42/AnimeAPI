@@ -4,11 +4,11 @@ from accounts.models import User
 
 class Plateforme(models.Model):
     objects = models.Manager()
-    plateforme = models.CharField(max_length=64, unique=True)
+    plateforme_name = models.CharField(max_length=64, unique=True)
     plateforme_url = models.CharField(max_length=256)
 
     def __str__(self):
-        return self.plateforme
+        return self.plateforme_name
 
 
 class Anime(models.Model):
