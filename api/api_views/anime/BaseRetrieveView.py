@@ -1,16 +1,13 @@
 from rest_framework import status
 from rest_framework.generics import RetrieveAPIView
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from api.api_views.anime.base_class import BaseAnimeView
 from api.models import Anime
 from api.serializers.AnimeSerializer import AnimesSerializer
 
 
-class AnimeRetrieveView(RetrieveAPIView):
-    queryset = Anime.objects.all()
-    serializer_class = AnimesSerializer
-    permission_classes = [IsAuthenticated]
+class AnimeRetrieveView(BaseAnimeView, RetrieveAPIView):
 
     def get_object(self):
         return Anime.objects.all()

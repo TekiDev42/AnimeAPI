@@ -4,17 +4,13 @@ from django.http import Http404
 
 from rest_framework import status
 from rest_framework.generics import ListAPIView
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from api.api_views.anime.base_class import BaseAnimeView
 from api.models import Anime
-from api.serializers.AnimeSerializer import AnimesSerializer
 
 
-class AnimeGetView(ListAPIView):
-    queryset = Anime.objects.all()
-    serializer_class = AnimesSerializer
-    permission_classes = [IsAuthenticated]
+class AnimeGetView(BaseAnimeView, ListAPIView):
 
     def get_object(self, pk=None):
         pprint(pk)
