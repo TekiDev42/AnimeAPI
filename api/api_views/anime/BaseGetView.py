@@ -12,14 +12,14 @@ from api.models import Anime
 
 class AnimeGetView(BaseAnimeView, ListAPIView):
 
-    def get_object(self, pk=None):
+    def get_object(self, pk=None) -> Anime | Http404:
         pprint(pk)
         try:
             return Anime.objects.get(pk=pk)
         except Anime.DoesNotExist:
             raise Http404
 
-    def list(self, request, *args, **kwargs):
+    def list(self, request, *args, **kwargs) -> Response:
         anime = self.get_object(kwargs['pk'])
         serializer = self.serializer_class(anime)
         return Response(serializer.data, status=status.HTTP_200_OK)
