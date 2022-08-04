@@ -4,6 +4,7 @@ from rest_framework_simplejwt.views import TokenRefreshView
 from accounts.views import UserTokenObtainView, RegisterView
 
 from api.api_views.anime.BaseCreateView import AnimeCreateView
+from api.api_views.anime.BaseDeleteView import AnimeDeleteView
 from api.api_views.anime.BaseGetView import AnimeGetView
 from api.api_views.anime.BaseRetrieveView import AnimeRetrieveView
 from api.api_views.plateforme.PlateformeViewSet import PlateformeViewSet
@@ -17,6 +18,7 @@ urlpatterns = [
     path('anime/<int:pk>/', AnimeGetView.as_view(), name="get_anime"),
     path('animes/', AnimeRetrieveView.as_view(), name="all_animes"),
     path('add_anime/', AnimeCreateView.as_view(), name="add_anime"),
+    path('delete/<int:pk>/', AnimeDeleteView.as_view(), name="delete_anime"),
 
     path('plateformes/', PlateformeViewSet.as_view({'get': 'list'}), name="plateformes"),
 

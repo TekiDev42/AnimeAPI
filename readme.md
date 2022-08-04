@@ -42,6 +42,7 @@
 
 - animes
   - [X] Afficher les animes
+  - [X] Afficher 1 anime
   - [X] Ajouter
-  - [ ] supprimer
+  - [X] supprimer
   - [ ] modifier
