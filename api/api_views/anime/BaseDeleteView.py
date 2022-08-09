@@ -1,9 +1,7 @@
-from pprint import pprint
-
 from django.http import Http404
 
 from rest_framework import status
-from rest_framework.generics import RetrieveUpdateDestroyAPIView, get_object_or_404
+from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 
 from api.api_views.anime.base_class import BaseAnimeView
